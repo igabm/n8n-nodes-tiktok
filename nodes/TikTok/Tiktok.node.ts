@@ -3,7 +3,7 @@ import { VersionedNodeType } from 'n8n-workflow';
 
 import { TikTokV2 } from './V2/TikTokV2.node';
 
-export class TikTok extends VersionedNodeType {
+export class Tiktok extends VersionedNodeType {
 	constructor() {
 		const baseDescription: INodeTypeBaseDescription = {
 			displayName: 'TikTok',
