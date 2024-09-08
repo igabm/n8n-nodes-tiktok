@@ -47,6 +47,13 @@ This node allows you to automate content posting to TikTok by uploading videos o
 
 For new users, check out the [Try it out](https://docs.n8n.io/try-it-out/) guide for general n8n workflow usage.
 
+## Dev Usage
+To link to a local n8n instance: (if dev workspace is ~/work/ )
+pnpm link ~/work/n8n-nodes-tiktok/
+
+To publish a new release:
+pnpm publish  --access public
+
 ## Resources
 
 * [n8n community nodes documentation](https://docs.n8n.io/integrations/community-nodes/)
