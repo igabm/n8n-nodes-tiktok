@@ -1,5 +1,5 @@
 {
-  "name": "n8n-nodes-tiktok",
+  "name": "@igabm/n8n-nodes-tiktok",
   "version": "0.1.0",
   "description": "n8n nodes for implementation for TikTok API",
   "keywords": [
@@ -13,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/igabm/n8n-nodes-tiktok.git"
+    "url": "git+https://github.com/igabm/n8n-nodes-tiktok.git"
   },
   "engines": {
     "node": ">=18.10",
@@ -43,6 +43,7 @@
     ]
   },
   "devDependencies": {
+    "@types/node": "^22.5.4",
     "@typescript-eslint/parser": "^7.15.0",
     "eslint": "^8.56.0",
     "eslint-plugin-n8n-nodes-base": "^1.16.1",
@@ -53,5 +54,13 @@
   },
   "peerDependencies": {
     "n8n-workflow": "*"
+  },
+  "dependencies": {
+    "eslint-config-riot": "^1.0.0",
+    "eslint-scope": "^7.2.2",
+    "eslint-visitor-keys": "^3.4.3"
+  },
+  "bugs": {
+    "url": "https://github.com/igabm/n8n-nodes-tiktok/issues"
   }
 }
