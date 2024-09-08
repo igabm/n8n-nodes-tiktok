@@ -1,0 +1,36 @@
+{
+	"node": "n8n-nodes-tiktok",
+	"nodeVersion": "1.0",
+	"codexVersion": "1.0",
+	"categories": ["Social Media"],
+	"resources": {
+		"credentialDocumentation": [
+			{
+				"url": "https://developers.tiktok.com/doc/oauth-user-access-token-management"
+			}
+		],
+		"primaryDocumentation": [
+			{
+				"url": "https://github.com/igabm/n8n-nodes-tiktok"
+			}
+		],
+		"generic": [
+			{
+				"label": "TikTok API Best Practices",
+				"icon": "🎵",
+				"url": "https://developers.tiktok.com/doc/tiktok-api-best-practices"
+			},
+			{
+				"label": "Top Social Media Workflows for TikTok",
+				"icon": "📱",
+				"url": "https://n8n.io/blog/top-social-media-workflows-tiktok"
+			},
+			{
+				"label": "Optimize TikTok Campaigns with Automation",
+				"icon": "🚀",
+				"url": "https://n8n.io/blog/optimize-tiktok-campaigns-automation"
+			}
+		]
+	},
+	"alias": ["TikTok", "TikTok API", "TikTok Video", "TikTok OAuth"]
+}
