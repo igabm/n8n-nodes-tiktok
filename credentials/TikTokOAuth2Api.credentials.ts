@@ -1,4 +1,4 @@
-import type { ICredentialType, INodeProperties } from 'n8n-workflow';
+import type { ICredentialTestRequest, ICredentialType, INodeProperties } from 'n8n-workflow';
 
 const scopes = [
 	'user.info.basic',
@@ -12,54 +12,57 @@ const scopes = [
 export class TikTokOAuth2Api implements ICredentialType {
 	name = 'tiktokOAuth2Api';
 
-	extends = ['oAuth2Api'];
-
-	displayName = 'TikTok OAuth2 API';
+	displayName = 'TikTok OAuth API';
 
 	documentationUrl = 'https://developers.tiktok.com/doc/oauth-user-access-token-management';
 
 	properties: INodeProperties[] = [
 		{
-			displayName: 'TikTok API documentation',
-			name: 'apiPermissions',
-			type: 'notice',
+			displayName: 'Client Key',
+			name: 'clientKey',
+			type: 'string',
 			default: '',
+			required: true,
 		},
 		{
-			displayName: 'Grant Type',
-			name: 'grantType',
-			type: 'hidden',
-			default: 'authorizationCode',
-		},
-		{
-			displayName: 'Authorization URL',
-			name: 'authUrl',
-			type: 'hidden',
-			default: 'https://www.tiktok.com/v2/auth/authorize/',
-		},
-		{
-			displayName: 'Access Token URL',
-			name: 'accessTokenUrl',
-			type: 'hidden',
-			default: 'https://open-api.tiktok.com/oauth/access_token/',
-		},
-		{
-			displayName: 'Scope',
-			name: 'scope',
-			type: 'hidden',
-			default: `${scopes.join(' ')}`,
-		},
-		{
-			displayName: 'Auth URI Query Parameters',
-			name: 'authQueryParameters',
-			type: 'hidden',
+			displayName: 'Client Secret',
+			name: 'clientSecret',
+			type: 'string',
+			typeOptions: {
+				password: true,
+			},
 			default: '',
+			required: true,
 		},
 		{
-			displayName: 'Authentication',
-			name: 'authentication',
+			displayName: 'Redirect URI',
+			name: 'redirectUri',
+			type: 'string',
+			default: '',
+			required: true,
+		},
+		{
+			displayName: 'Scopes',
+			name: 'scopes',
 			type: 'hidden',
-			default: 'header',
+			default: `${scopes.join(',')}`, // Comma-separated list for scopes
 		},
 	];
+
+	test: ICredentialTestRequest = {
+		request: {
+			method: 'POST',
+			url: 'https://open.tiktokapis.com/v2/oauth/token/',
+			body: {
+				client_key: '={{$credentials.clientKey}}',
+				client_secret: '={{$credentials.clientSecret}}',
+				redirect_uri: '={{$credentials.redirectUri}}',
+				grant_type: 'authorization_code',
+				scope: '={{$self.scopes}}', // Now uses a comma-separated list
+			},
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded',
+			},
+		},
+	};
 }
