@@ -16,7 +16,7 @@ export const photoPostOperations: INodeProperties[] = [
 				name: 'Upload',
 				value: 'upload',
 				description: 'Upload a photo to TikTok',
-				action: 'Upload Photo',
+				action: 'Upload photo',
 			},
 		],
 		default: 'upload',

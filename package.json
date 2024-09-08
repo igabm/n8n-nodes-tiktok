@@ -1,7 +1,7 @@
 {
   "name": "n8n-nodes-tiktok",
   "version": "0.1.0",
-  "description": "",
+  "description": "n8n nodes for implementation for TikTok API",
   "keywords": [
     "n8n-community-node-package"
   ],
@@ -39,8 +39,7 @@
       "dist/credentials/TikTokOAuth2Api.credentials.js"
     ],
     "nodes": [
-      "dist/nodes/ExampleNode/ExampleNode.node.js",
-      "dist/nodes/HttpBin/HttpBin.node.js"
+      "dist/nodes/TikTok/Tiktok.node.js"
     ]
   },
   "devDependencies": {
