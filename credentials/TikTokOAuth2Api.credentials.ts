@@ -29,7 +29,7 @@ export class TikTokOAuth2Api implements ICredentialType {
 			displayName: 'Grant Type',
 			name: 'grantType',
 			type: 'hidden',
-			default: 'authorization_code',
+			default: 'authorizationCode',
 		},
 		{
 			displayName: 'Authorization URL',
