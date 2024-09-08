@@ -21,6 +21,7 @@ export class TikTokOAuth2Api implements ICredentialType {
 			displayName: 'Client Key',
 			name: 'clientKey',
 			type: 'string',
+			typeOptions: { password: true },
 			default: '',
 			required: true,
 		},
