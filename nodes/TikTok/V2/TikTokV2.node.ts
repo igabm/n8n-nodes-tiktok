@@ -4,7 +4,6 @@ import {
 	type IExecuteFunctions,
 	type ILoadOptionsFunctions,
 	type INodeExecutionData,
-	type INodeParameterResourceLocator,
 	type INodePropertyOptions,
 	type INodeType,
 	type INodeTypeBaseDescription,
@@ -12,13 +11,11 @@ import {
 	type JsonObject,
 } from 'n8n-workflow';
 
-import { DateTime } from 'luxon';
 import { videoPostFields, videoPostOperations } from './VideoPostDescription'; // Assume VideoPostDescription file handles video posting
 import { photoPostFields, photoPostOperations } from './PhotoPostDescription'; // Assume PhotoPostDescription file handles photo posting
 
 import {
 	tiktokApiRequest,
-	tiktokApiRequestAllItems,
 } from './GenericFunctions'; // Adjusted to TikTok API helper functions
 
 export class TikTokV2 implements INodeType {

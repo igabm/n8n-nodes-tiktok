@@ -8,7 +8,8 @@ import type {
 	IRequestOptions,
 	IHttpRequestMethods,
 } from 'n8n-workflow';
-import { ApplicationError, NodeApiError, NodeOperationError } from 'n8n-workflow';
+import { ApplicationError, NodeApiError } from 'n8n-workflow';
+import { URL } from 'url';
 
 export async function tiktokApiRequest(
 	this: IExecuteFunctions | ILoadOptionsFunctions | IHookFunctions,
@@ -85,10 +86,20 @@ export function returnId(contentId: INodeParameterResourceLocator) {
 			}
 			return parts[3];
 		} catch (error) {
-			throw new ApplicationError('Not a valid TikTok URL', { level: 'warning', cause: error });
+			throw new ApplicationError('Not a valid TikTok URL', {
+				level: 'warning',
+				cause: error,
+				tags: {},   // Add an empty object or specific tags here
+				extra: {}   // Add any extra information here
+			  });
+			  
 		}
 	} else {
-		throw new ApplicationError(`The mode ${contentId.mode} is not valid!`, { level: 'warning' });
+		throw new ApplicationError(`The mode ${contentId.mode} is not valid!`, { level: 'warning' ,
+			tags: {},   // Add an empty object or specific tags here
+			extra: {}   // Add any extra information here
+		  });
+		  
 	}
 }
 
@@ -108,6 +119,8 @@ export async function returnIdFromUsername(
 	} else {
 		throw new ApplicationError(`The username mode ${usernameRlc.mode} is not valid!`, {
 			level: 'warning',
-		});
+			tags: {},   // Add an empty object or specific tags here
+			extra: {}   // Add any extra information here
+		  });
 	}
 }
