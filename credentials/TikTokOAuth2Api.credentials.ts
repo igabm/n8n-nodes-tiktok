@@ -106,6 +106,7 @@ export class TikTokOAuth2Api implements ICredentialType {
     {
       displayName: "Expected State Token (optional)",
       name: "expectedStateToken",
+      typeOptions: { password: true },
       type: "string",
       default: "",
     },
