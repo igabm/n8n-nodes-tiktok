@@ -6,6 +6,7 @@ import {
         type ILoadOptionsFunctions,
         type INodeExecutionData,
         type INodePropertyOptions,
+       type INodeParameterResourceLocator,
         type INodeType,
         type INodeTypeBaseDescription,
         type INodeTypeDescription,
@@ -15,9 +16,11 @@ import {
 import { videoPostFields, videoPostOperations } from './VideoPostDescription'; // Assume VideoPostDescription file handles video posting
 import { photoPostFields, photoPostOperations } from './PhotoPostDescription'; // Assume PhotoPostDescription file handles photo posting
 import { userProfileFields, userProfileOperations } from './UserProfileDescription';
+import { relationshipFields, relationshipOperations } from './RelationshipDescription';
 
 import {
-	tiktokApiRequest,
+       tiktokApiRequest,
+       returnIdFromUsername,
 } from './GenericFunctions'; // Adjusted to TikTok API helper functions
 
 export class TikTokV2 implements INodeType {
@@ -27,7 +30,7 @@ export class TikTokV2 implements INodeType {
 		this.description = {
 			...baseDescription,
 			version: 2,
-                        description: 'Upload and manage TikTok videos and photos, and retrieve profile information',
+                       description: 'Upload and manage TikTok videos and photos, retrieve profile information, and manage relationships',
 			subtitle: '={{$parameter["operation"] + ":" + $parameter["resource"]}}',
 			defaults: {
 				name: 'TikTok',
@@ -62,9 +65,14 @@ export class TikTokV2 implements INodeType {
                                                         value: 'userProfile',
                                                         description: 'Retrieve profile data of a TikTok user',
                                                 },
+                                               {
+                                                       name: 'Relationship',
+                                                       value: 'relationship',
+                                                       description: 'Follow or unfollow a user',
+                                               },
                                         ],
-					default: 'videoPost',
-				},
+                                        default: 'videoPost',
+                                },
                                 // VIDEO POST
                                 ...videoPostOperations,
                                 ...videoPostFields,
@@ -74,6 +82,9 @@ export class TikTokV2 implements INodeType {
                                 // USER PROFILE
                                 ...userProfileOperations,
                                 ...userProfileFields,
+                               // RELATIONSHIP
+                               ...relationshipOperations,
+                               ...relationshipFields,
                         ],
                 };
         }
@@ -201,6 +212,29 @@ export class TikTokV2 implements INodeType {
                                                 responseData = metricsData;
                                         }
                                 }
+
+                               if (resource === 'relationship') {
+                                       const userIdRlc = this.getNodeParameter('userId', i) as INodeParameterResourceLocator;
+                                       let userId = userIdRlc.value as string;
+                                       if (userIdRlc.mode === 'username') {
+                                               userId = await returnIdFromUsername.call(this, userIdRlc);
+                                       }
+
+                                       if (operation === 'follow') {
+                                               const body: IDataObject = { user_id: userId };
+                                               responseData = await tiktokApiRequest.call(this, 'POST', '/follow/', body);
+                                       }
+
+                                       if (operation === 'unfollow') {
+                                               const body: IDataObject = { user_id: userId };
+                                               responseData = await tiktokApiRequest.call(
+                                                       this,
+                                                       'POST',
+                                                       '/following/delete/',
+                                                       body,
+                                               );
+                                       }
+                               }
 
 				const executionData = this.helpers.constructExecutionMetaData(
 					this.helpers.returnJsonArray(responseData as IDataObject[]),
