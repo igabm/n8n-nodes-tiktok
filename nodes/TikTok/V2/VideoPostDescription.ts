@@ -24,6 +24,12 @@ export const videoPostOperations: INodeProperties[] = [
 				description: 'Delete a video from TikTok',
 				action: 'Delete video',
 			},
+			{
+				name: 'Get',
+				value: 'get',
+				description: 'Retrieve video metadata',
+				action: 'Get video',
+			},
 		],
 		default: 'upload',
 	},
@@ -92,5 +98,50 @@ export const videoPostFields: INodeProperties[] = [
 			},
 		},
 		description: 'The ID of the video to delete',
+	},
+	/* -------------------------------------------------------------------------- */
+	/*                                videoPost:get                               */
+	/* -------------------------------------------------------------------------- */
+	{
+		displayName: 'Video ID',
+		name: 'videoId',
+		type: 'string',
+		default: '',
+		displayOptions: {
+			show: {
+				resource: ['videoPost'],
+				operation: ['get'],
+			},
+		},
+		description: 'ID of the video to retrieve. Leave empty to list videos.',
+	},
+	{
+		displayName: 'Pagination',
+		name: 'pagination',
+		type: 'collection',
+		placeholder: 'Add Parameter',
+		default: {},
+		displayOptions: {
+			show: {
+				resource: ['videoPost'],
+				operation: ['get'],
+			},
+		},
+		options: [
+			{
+				displayName: 'Cursor',
+				name: 'cursor',
+				type: 'number',
+				default: 0,
+				description: 'Pagination cursor for results',
+			},
+			{
+				displayName: 'Page Size',
+				name: 'pageSize',
+				type: 'number',
+				default: 20,
+				description: 'Number of videos to return',
+			},
+		],
 	},
 ];
