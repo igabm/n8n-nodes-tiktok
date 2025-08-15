@@ -15,6 +15,7 @@ import {
 import { videoPostFields, videoPostOperations } from './VideoPostDescription'; // Assume VideoPostDescription file handles video posting
 import { photoPostFields, photoPostOperations } from './PhotoPostDescription'; // Assume PhotoPostDescription file handles photo posting
 import { userProfileFields, userProfileOperations } from './UserProfileDescription';
+import { commentFields, commentOperations } from './CommentDescription';
 
 import {
 	tiktokApiRequest,
@@ -27,7 +28,7 @@ export class TikTokV2 implements INodeType {
 		this.description = {
 			...baseDescription,
 			version: 2,
-                        description: 'Upload and manage TikTok videos and photos, and retrieve profile information',
+                        description: 'Upload and manage TikTok videos, photos, comments, and retrieve profile information',
 			subtitle: '={{$parameter["operation"] + ":" + $parameter["resource"]}}',
 			defaults: {
 				name: 'TikTok',
@@ -62,9 +63,14 @@ export class TikTokV2 implements INodeType {
                                                         value: 'userProfile',
                                                         description: 'Retrieve profile data of a TikTok user',
                                                 },
+                                                {
+                                                        name: 'Comment',
+                                                        value: 'comment',
+                                                        description: 'Manage comments on TikTok videos',
+                                                },
                                         ],
-					default: 'videoPost',
-				},
+                                        default: 'videoPost',
+                                },
                                 // VIDEO POST
                                 ...videoPostOperations,
                                 ...videoPostFields,
@@ -74,6 +80,9 @@ export class TikTokV2 implements INodeType {
                                 // USER PROFILE
                                 ...userProfileOperations,
                                 ...userProfileFields,
+                                // COMMENT
+                                ...commentOperations,
+                                ...commentFields,
                         ],
                 };
         }
@@ -142,6 +151,52 @@ export class TikTokV2 implements INodeType {
                                                         this,
                                                         'POST',
                                                         '/v2/post/publish/content/init/',
+                                                        body,
+                                                );
+                                        }
+                                }
+
+                                if (resource === 'comment') {
+                                        if (operation === 'list') {
+                                                const videoId = this.getNodeParameter('videoId', i) as string;
+                                                const cursor = this.getNodeParameter('cursor', i) as string;
+                                                const qs: IDataObject = { video_id: videoId };
+                                                if (cursor) {
+                                                        qs.cursor = cursor;
+                                                }
+                                                responseData = await tiktokApiRequest.call(
+                                                        this,
+                                                        'GET',
+                                                        '/v2/post/comment/list/',
+                                                        {},
+                                                        qs,
+                                                );
+                                        }
+                                        if (operation === 'create') {
+                                                const videoId = this.getNodeParameter('videoId', i) as string;
+                                                const commentText = this.getNodeParameter('commentText', i) as string;
+                                                const body: IDataObject = {
+                                                        video_id: videoId,
+                                                        comment_text: commentText,
+                                                };
+                                                responseData = await tiktokApiRequest.call(
+                                                        this,
+                                                        'POST',
+                                                        '/v2/post/comment/publish/',
+                                                        body,
+                                                );
+                                        }
+                                        if (operation === 'delete') {
+                                                const videoId = this.getNodeParameter('videoId', i) as string;
+                                                const commentId = this.getNodeParameter('commentId', i) as string;
+                                                const body: IDataObject = {
+                                                        video_id: videoId,
+                                                        comment_id: commentId,
+                                                };
+                                                responseData = await tiktokApiRequest.call(
+                                                        this,
+                                                        'POST',
+                                                        '/v2/post/comment/delete/',
                                                         body,
                                                 );
                                         }
