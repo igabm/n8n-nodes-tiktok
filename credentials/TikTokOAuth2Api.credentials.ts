@@ -11,6 +11,7 @@ import type {
 type OAuthData = {
   code?: string;
   redirectUri?: string;
+  access_token?: string;
   refresh_token?: string;
 
   // How your callback handler can pass the query back in:
